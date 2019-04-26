@@ -27,11 +27,10 @@ RUN apt-get update && \
 	apt-get -y clean
     
 ####################################################################
-# Madagascar build
+# Madagascar build - using master
 ####################################################################
 RUN git clone https://github.com/ahay/src  /madagascar-src&& \
 	cd /madagascar-src && \
-	git checkout madagascar-2.0 && \
 	./configure API=c++,python --prefix=/usr/local && \
 	make install && \
 	rm -r /madagascar-src
