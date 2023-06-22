@@ -34,8 +34,10 @@ RUN git clone https://github.com/ahay/src  /madagascar-src&& \
 	rm -r /madagascar-src
 
 RUN echo "\n" >> ~/.bashrc && \
-	echo "source /usr/local/share/madagascar/etc/env.sh" >> ~/.bashrc 
+	echo "source /usr/local/share/madagascar/etc/env.sh" >> ~/.bashrc && \
+	echo "\n" >> ~/.bashrc 
 
+ENTRYPOINT ["/bin/bash"]
 
 
 
