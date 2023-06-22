@@ -13,29 +13,29 @@
 
 FROM ubuntu:18.04
 
-###################################################################
-# Install some basic pre-requisites
-###################################################################
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends  \
-    libxaw7-dev freeglut3-dev libnetpbm10-dev libgd-dev libplplot-dev \
-	libavcodec-dev libcairo2-dev libjpeg-dev swig python-dev python-numpy g++ gfortran \
-	libopenmpi-dev libfftw3-dev libsuitesparse-dev python-epydoc scons \
-	git wget ca-certificates openssl && \
-	apt-get -y clean
-    
-####################################################################
-# Madagascar build - using master
-####################################################################
-RUN git clone https://github.com/ahay/src  /madagascar-src&& \
-	cd /madagascar-src && \
-	./configure API=c++,python --prefix=/usr/local && \
-	make install && \
-	rm -r /madagascar-src
 
-RUN echo "\n" >> ~/.bashrc && \
-	echo "source /usr/local/share/madagascar/etc/env.sh" >> ~/.bashrc && \
-	echo "\n" >> ~/.bashrc 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends  \
+      libxaw7-dev freeglut3-dev libnetpbm10-dev libgd-dev libplplot-dev \
+	  libavcodec-dev libcairo2-dev libjpeg-dev swig python-dev python-numpy g++ gfortran \
+	  libopenmpi-dev libfftw3-dev libsuitesparse-dev python-epydoc scons \
+	  git wget ca-certificates openssl \
+	&& git clone https://github.com/ahay/src /madagascar-src \
+    && cd /madagascar-src \
+    && ./configure API=c++,python --prefix=/usr/local \
+    && make install \
+    && rm -r /madagascar-src \
+	&& echo "\n" >> ~/.bashrc \
+    && echo "source /usr/local/share/madagascar/etc/env.sh" >> ~/.bashrc \
+    && echo "\n" >> ~/.bashrc \
+    && apt-get remove -y \
+       python-epydoc scons swig g++ gfortran \
+       git wget ca-certificates openssl \
+    && rm -rf /var/lib/apt/lists \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y
+
+    
 
 ENTRYPOINT ["/bin/bash"]
 
